@@ -9,6 +9,9 @@ class Aluno(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        managed = False
+        db_table = 'aluno'
 
     def __str__(self):
         return self.nome
@@ -21,6 +24,9 @@ class Curso(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        managed = False
+        db_table = 'curso'
 
     def __str__(self):
         return self.nome
@@ -41,6 +47,8 @@ class Matricula(models.Model):
 
     class Meta:
         unique_together = ('aluno', 'curso')
+        managed = False
+        db_table = 'matricula'
 
     def __str__(self):
         return f"{self.aluno.nome} - {self.curso.nome}"
