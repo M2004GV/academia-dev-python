@@ -1,11 +1,48 @@
 # Academia Dev Python - Desafio Técnico 2026.1
 
-Sistema para gerenciar alunos, cursos e matrículas
+Sistema para gerenciar **alunos**, **cursos** e **matrículas** com relátorios HTML.
 
 ## Funcionalidades implementadas
 
-- CRUD de Alunos, Cursos e Matrículas por api (`/api/alunos/`, `/api/cursos/`, `/api/matriculas/`)
-- Docker compose: a aplicação usa Postgres e PgAdmin, os scripts de inicialização criam o banco e importam as tabelas do arquivo `meu_database.sql`
+
+- CRUD completo via API
+ - `/api/alunos/` 
+ - `/api/cursos/` 
+ - `/api/matriculas/`
+
+- Relatórios JSON 
+ - `/api/relatorios/total_matriculas_por_curso/`
+ - `/api/relatorios/total_devido_por_aluno/`
+ - `/api/relatorios/pagamentos_pendentes/`
+ - `/api/matriculas/por_aluno/?aluno_id=X`
+
+- Relatórios HTML
+ - Dashboard geral: totais, métricas e visão administrativa
+  `http://localhost:8000/dashboard`
+ - Histórico por aluno com valores pagos/pendentes
+  `http://localhost:8000/alunos/<id>/historico/`
+
+- Django Admin configurado
+ - Modelos registrados
+ - `list_display`, `search_fields` e filtros
+ - Acesso: 
+  `http://localhost:8000/admin/`
+
+- Swagger
+ - Swagger Ui:
+ `http://localhost:8000/docs/swagger/`
+ - Redoc Ui:
+ `http://localhost:8000/docs/redoc/`
+
+- Docker completo
+ - Django + PostgreSQL + PgAdmin
+ - inicialização do db com `meu_database.sql`
+
+- seed de dados 
+Arquivo load_seeds.py permite popuar o banco com usuários, cursos e matrículas para testes
+```bash
+docker-compose exec web python load_seeds.py
+```
 
 ## Requisitos
 
@@ -26,8 +63,12 @@ git clone https://github.com/M2004GV/academia-dev-python.git .
  Copie `.env_example` para `.env` e ajuste as credenciais. O arquivo já contém valores do desenvolvimento Docker.
  ```bash
  cp .env_example .env
- # edite .env se deseja alterar o usuário, senha ou o nome do banco
   ```
+  O arquivo .env_example já contém valores compatíveis com Docker:
+  - Credenciais do PostgreSQL
+  - Credenciais do PgAdmin
+  - Nome do banco
+  - Config. do Django
 
 3. Build e subir:
 
@@ -49,8 +90,24 @@ git clone https://github.com/M2004GV/academia-dev-python.git .
      - Relatórios JSON: `http://localhost:8000/api/relatorios/total_matriculas_por_curso/`, `total_devido_por_aluno/` e `pagamentos_pendentes/`
 
    - **Django Admin**: [http://localhost:8000/admin/](http://localhost:8000/admin/)
+  
+  Crie um superusuário:
+  ```bash
+  docker-compose exec web python manage.py createsuperuser
+  ```
 
-   - **PgAdmin**: [http://localhost:5050](http://localhost:5050).  Use as credenciais definidas em `.env` (variáveis `PGADMIN_USER` e `PGADMIN_PASSWORD`).  Após logar, adicione um servidor apontando para host `db`, porta `5432` e as credenciais do banco.
+   - **PgAdmin**: [http://localhost:5050](http://localhost:5050). 
+   Use as credenciais definidas em `.env`:
+   ```ini
+    PGADMIN_USER=admin@admin.com
+    PGADMIN_PASSWORD=admin
+  ```
+
+  Após logar, adicione um servidor:
+   - Host: db
+   - Porta: 5432
+   - User: escola_user
+   - Senha: escola_pass
 
 ## 🛠 Uso da API
 
@@ -72,12 +129,8 @@ curl http://localhost:8000/api/matriculas/por_aluno/?aluno_id=1
 curl http://localhost:8000/api/relatorios/total_devido_por_aluno/
 ```
 
-## Dicas gerais
+## Observações importantes
 
 - A aplicação usa ``managed=False`` nos modelos para aproveitar as tabelas criadas via SQL no `meu_database.sql`.  Isso evita conflitos entre migrations e a estrutura definida no desafio.
 - Os relatórios HTML podem ser acessados mesmo sem dados; experimente cadastrar alunos, cursos e matrículas via API ou admin para ver os gráficos popularem.
-- Para criar um usuário administrador, conecte-se ao contêiner e execute `python manage.py createsuperuser`.  Por exemplo:
-  ```bash
-  docker compose exec web python manage.py createsuperuser
-  ```
-- Toda funcionalidade solicitada no PDF está mapeada: CRUD completo, relatório via SQL bruto, relatórios HTML e API, uso de Docker com Postgres【551091830093539†L24-L89】.
+- Swagger gera documentação automática de todos os endpoints DRF usando `drf-yasg`
