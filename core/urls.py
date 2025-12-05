@@ -16,8 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from escola import views as escola_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('escola.urls')),
+
+    # endpoint /api/
+    path('api/', include('escola.urls')),
+
+    path('dashboard/', escola_views.dashboard, name='dashboard'),
+    path('alunos/<int:aluno_id>/historico/', escola_views.historico_aluno, name='aluno_historico'),
+
 ]
