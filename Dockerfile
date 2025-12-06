@@ -17,5 +17,4 @@ COPY . .
 # Expõe a porta do Django
 EXPOSE 8000
 
-# Comando padrão ao iniciar o container
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
