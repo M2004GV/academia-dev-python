@@ -39,10 +39,10 @@ Sistema para gerenciar **alunos**, **cursos** e **matrículas** com relátorios 
   - inicialização do db com `meu_database.sql`
 
 - Seed de dados 
-  -  Arquivo load_seeds.py permite popuar o banco com usuários, cursos e matrículas para testes
-```bash
-docker-compose exec web python load_seeds.py
-```
+  -  Arquivo load_seeds.py permite popular o banco com usuários, cursos e matrículas
+    ```bash
+    docker-compose exec web python load_seeds.py
+    ```
 
 ## Requisitos
 
@@ -54,15 +54,15 @@ docker-compose exec web python load_seeds.py
 
 1. Clone o repositorio 
 
-```bash
-git clone https://github.com/M2004GV/academia-dev-python.git .
-```
+    ```bash
+    git clone https://github.com/M2004GV/academia-dev-python.git .
+    ```
 
 2. Configure as variáveis de ambiente
 
- Copie `.env_example` para `.env` e ajuste as credenciais. O arquivo já contém valores do desenvolvimento Docker.
- ```bash
- cp .env_example .env
+  Copie `.env_example` para `.env` e ajuste as credenciais. O arquivo já contém valores do desenvolvimento Docker.
+  ```bash
+cp .env_example .env
   ```
   O arquivo .env_example já contém valores compatíveis com Docker:
   - Credenciais do PostgreSQL
@@ -90,24 +90,35 @@ git clone https://github.com/M2004GV/academia-dev-python.git .
      - Relatórios JSON: `http://localhost:8000/api/relatorios/total_matriculas_por_curso/`, `total_devido_por_aluno/` e `pagamentos_pendentes/`
 
    - **Django Admin**: [http://localhost:8000/admin/](http://localhost:8000/admin/)
+   <br>
   
-  Crie um superusuário:
-  ```bash
-  docker-compose exec web python manage.py createsuperuser
-  ```
+      Crie um superusuário: 
+
+      ```bash
+      docker-compose exec web python manage.py createsuperuser
+      ```
 
    - **PgAdmin**: [http://localhost:5050](http://localhost:5050). 
-   Use as credenciais definidas em `.env`:
-   ```ini
-    PGADMIN_USER=admin@admin.com
-    PGADMIN_PASSWORD=admin
-  ```
+   Use as credenciais definidas em `.env_example`:
+      ```ini
+        PGADMIN_USER=admin@admin.com
+        PGADMIN_PASSWORD=admin
+      ```
 
-  Após logar, adicione um servidor:
-   - Host: db
-   - Porta: 5432
-   - User: escola_user
-   - Senha: escola_pass
+      - Clique em **Add New Server**
+      - Aba *General*:  
+         - Name: `PostgresLocal`
+      - Aba *Connection*:  
+          - Host: `db`  
+         - Port: `5432`  
+         - Username: `escola_user`  
+         - Password: `escola_pass`
+      - Salvar
+
+
+      
+
+      
 
 ##  Uso da API
 
@@ -129,8 +140,20 @@ curl http://localhost:8000/api/matriculas/por_aluno/?aluno_id=1
 curl http://localhost:8000/api/relatorios/total_devido_por_aluno/
 ```
 
+## Telas do Sistema
+
+     Dashboard Geral
+  ![Dashboard](docs/img/dashboard.png)
+
+     Histórico do Aluno
+  ![Histórico do Aluno](docs/img/historico.png)
+
+     Django Admin
+
+  ![Admin](docs/img/admin.png)
+
 ## Observações importantes
 
 - A aplicação usa ``managed=False`` nos modelos para aproveitar as tabelas criadas via SQL no `meu_database.sql`.  Isso evita conflitos entre migrations e a estrutura definida no desafio.
-- Os relatórios HTML podem ser acessados mesmo sem dados; experimente cadastrar alunos, cursos e matrículas via API ou admin para ver os gráficos popularem.
+- Os relatórios HTML podem ser acessados mesmo sem dados; experimente cadastrar alunos, cursos e matrículas via API ou admin para ver os gráficos.
 - Swagger gera documentação automática de todos os endpoints DRF usando `drf-yasg`
