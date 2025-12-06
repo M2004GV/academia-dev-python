@@ -73,11 +73,9 @@ cp .env_example .env
 
     **Importante**: a chave `SECRET_KEY` deve ser única. Você pode gerar uma chave aleatório executando:
 
-  ```bash
-
-  docker-compose exec web python -c "from django.core.management.utils import get_random_secret_key as k; print(k())"
-  ```
-
+ ```bash
+    docker-compose run --rm web python -c "from django.core.management.utils import get_random_secret_key as k; print(k())"
+ ```
    Copie o resultado para a variável `SECRET_KEY` no seu `.env`
 
 3. Build e subir:
