@@ -2,6 +2,7 @@ import os
 import django
 import random
 from datetime import date, timedelta
+from validate_docbr import CPF
 
 # Configura o Django para rodar fora do manage.py
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
@@ -11,36 +12,46 @@ from escola.models import Aluno, Curso, Matricula
 
 
 def run():
+    # Inicializa o gerador de CPF
+    cpf_generator = CPF()
+
     # criar alunos
     alunos_data = [
-        ("Ana Bezerra", "ana@example.com", "11111111111"),
-        ("Bruno Henrique", "bruno@example.com", "22222222222"),
-        ("Carla Souza", "carla@example.com", "33333333333"),
-        ("Daniel Rocha", "daniel@example.com", "44444444444"),
-        ("Eduarda Martins", "eduarda@example.com", "55555555555"),
-        ("Fernanda Torres", "fernanda@example.com", "66666666666"),
-        ("Gabriel Ferreira", "gabriel@example.com", "77777777777"),
-        ("Helena Dias", "helena@example.com", "88888888888"),
-        ("Igor Almeida", "igor@example.com", "99999999999"),
-        ("Joana Melo", "joana@example.com", "10101010101"),
-        ("Kleber Castro", "kleber@example.com", "12121212121"),
-        ("Larissa Andrade", "larissa@example.com", "13131313131"),
-        ("Marcelo Farias", "marcelo@example.com", "14141414141"),
-        ("Natália Freire", "natalia@example.com", "15151515151"),
-        ("Otávio Ramos", "otavio@example.com", "16161616161"),
+        ("Pedro Alcântara", "pedro.alcantara@teste.com"),
+        ("Quitéria Chagas", "quiteria@teste.com"),
+        ("Ricardo Oliveira", "ricardo.oliveira@teste.com"),
+        ("Sandra Lima", "sandra.lima@teste.com"),
+        ("Thiago Monteiro", "thiago.monteiro@teste.com"),
+        ("Ulisses Guimarães", "ulisses@teste.com"),
+        ("Vanessa Camargo", "vanessa@teste.com"),
+        ("William Bonner", "william@teste.com"),
+        ("Ximena Morales", "ximena@teste.com"),
+        ("Yuri Martins", "yuri@teste.com"),
+        ("Zélia Duncan", "zelia@teste.com"),
+        ("Amanda Nunes", "amanda.nunes@teste.com"),
+        ("Beto Falcão", "beto@teste.com"),
+        ("Camila Pitanga", "camila@teste.com"),
+        ("Diego Ribas", "diego.ribas@teste.com"),
     ]
 
     alunos = []
-    for nome, email, cpf in alunos_data:
-        aluno, _ = Aluno.objects.get_or_create(
+    for nome, email in alunos_data:
+        cpf_valido = cpf_generator.generate()
+
+        aluno, created = Aluno.objects.get_or_create(
             email=email,
-            defaults={"nome": nome, "cpf": cpf},
+            defaults={"nome": nome, "cpf": cpf_valido},
         )
         alunos.append(aluno)
 
-    print(f"Alunos inseridos: {len(alunos)}")
+        if created:
+            print(f"{nome} criado com CPF: {cpf_valido}")
+        else:
+            print(f"{nome} já existia")
 
-    #criar cursos
+    print(f"\n Total de alunos no banco: {len(alunos)}")
+
+    # criar cursos
     cursos_data = [
         ("Python Básico", 40, 300.00),
         ("Django Web Framework", 60, 500.00),
@@ -56,7 +67,7 @@ def run():
 
     cursos = []
     for nome, carga, valor in cursos_data:
-        curso, _ = Curso.objects.get_or_create(
+        curso, created = Curso.objects.get_or_create(
             nome=nome,
             defaults={
                 "carga_horaria": carga,
@@ -66,19 +77,28 @@ def run():
         )
         cursos.append(curso)
 
-    print(f"Cursos inseridos: {len(cursos)}")
+        if created:
+            print(f"✓ Curso '{nome}' criado")
+        else:
+            print(f"→ Curso '{nome}' já existia")
 
-    #criar matrículas aleatórias
+    print(f"\n Total de cursos no banco: {len(cursos)}")
+
+    # criar matrículas aleatórias
     status_choices = ["pago", "pendente"]
     total_matriculas = 0
 
+    print("\n Gerando matrículas...")
     for _ in range(25):
         aluno = random.choice(alunos)
         curso = random.choice(cursos)
-
         status = random.choice(status_choices)
 
-        valor_pago = curso.valor_inscricao if status == "pago" else random.choice([0, 0, 0, 50, 100])
+        # Lógica de valor pago
+        if status == "pago":
+            valor_pago = curso.valor_inscricao
+        else:
+            valor_pago = 0
 
         data_matricula = date.today() - timedelta(days=random.randint(0, 120))
 
@@ -95,7 +115,8 @@ def run():
         if created:
             total_matriculas += 1
 
-    print(f"Matrículas inseridas: {total_matriculas}")
+    print(f"\nMatrículas novas inseridas: {total_matriculas}")
+    print(f"Total de matrículas no banco: {Matricula.objects.count()}")
 
 
 if __name__ == "__main__":
