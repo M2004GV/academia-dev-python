@@ -36,6 +36,9 @@ class MatriculaViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def por_aluno(self, request):
+        """
+        Lista as matrículas de um aluno espífico
+        """
         aluno_id = request.query_params.get('aluno_id')
         if not aluno_id:
             return Response({'detail': 'aluno_id é obrigatório como parâmetro de consulta.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -51,6 +54,7 @@ class MatriculaViewSet(viewsets.ModelViewSet):
 class RelatoriosViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['get'])
     def total_matriculas_por_curso(self, request):
+        
         query = """
             SELECT c.nome AS curso, COUNT(m.id) AS total
             FROM curso c
@@ -66,6 +70,7 @@ class RelatoriosViewSet(viewsets.ViewSet):
     
     @action(detail=False, methods=['get'])
     def total_devido_por_aluno(self, request):
+        """ Retorna o valor total devido por cada aluno"""
         query = """
             SELECT a.id, a.nome, COALESCE(SUM(c.valor_inscricao), 0) AS total_devido
             FROM aluno a
@@ -89,6 +94,7 @@ class RelatoriosViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=['get'])
     def pagamentos_pendentes(self, request):
+        """ Retorna o valor total pendente por aluno."""
         query = """
             SELECT a.id, a.nome,
                    COALESCE(SUM(c.valor_inscricao), 0) AS total_devido,
@@ -120,8 +126,10 @@ class RelatoriosViewSet(viewsets.ViewSet):
 # Views para relatórios HTML
 # -----------------------------------------------------------------------------
 def historico_aluno(request, aluno_id: int):
+    """   Gera o relatório de histórico de um aluno específico."""
     aluno = get_object_or_404(Aluno, pk=aluno_id)
 
+    # otimizar consultas com select_related
     matriculas = Matricula.objects.filter(aluno=aluno).select_related('curso')
     total_matriculas = matriculas.count()
     total_pago = matriculas.aggregate(total=Sum('valor_pago'))['total'] or 0
@@ -139,6 +147,18 @@ def historico_aluno(request, aluno_id: int):
 
 
 def dashboard(request):
+    """
+    Exibe o dashboard geral
+    Os dados exibidos incluem:
+
+    total de alunos
+    total de cursos ativos e inativos
+    total de matrículas pagas e pendentes
+    receita total recebida e receita pendente
+    número de matrículas por curso
+
+    """
+
     total_alunos = Aluno.objects.count()
     cursos_ativos = Curso.objects.filter(status_curso=True).count()
     cursos_inativos = Curso.objects.filter(status_curso=False).count()
