@@ -160,6 +160,14 @@ curl http://localhost:8000/api/relatorios/total_devido_por_aluno/
 
   ![Admin](docs/img/admin.png)
 
+    Swagger
+
+  ![Swagger](docs/img/swagger.png) 
+
+    Redoc
+
+  ![Redoc](docs/img/redoc.png) 
+
 ## Observações importantes
 
 - A aplicação usa ``managed=False`` nos modelos para aproveitar as tabelas criadas via SQL no `meu_database.sql`.  Isso evita conflitos entre migrations e a estrutura definida no desafio.
