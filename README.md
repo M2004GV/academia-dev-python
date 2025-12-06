@@ -117,7 +117,7 @@ cp .env_example .env
 
       - Clique em **Add New Server**
       - Aba *General*:  
-         - Name: `PostgresLocal`
+         - Name: `desafio`
       - Aba *Connection*:  
           - Host: `db`  
          - Port: `5432`  
