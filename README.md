@@ -73,7 +73,7 @@ git clone https://github.com/M2004GV/academia-dev-python.git .
 3. Build e subir:
 
     ``` bash
-    docker-compose up --build 
+    docker-compose up -d --build 
     ```
     O compose criará a imagem do django, inicializará o PostgreSQL com as tabelas definidas em `meu_database.sql` e disponibilizará o PgAdmin na porta 5050
 
