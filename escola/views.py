@@ -133,14 +133,14 @@ def historico_aluno(request, aluno_id: int):
     matriculas = Matricula.objects.filter(aluno=aluno).select_related('curso')
     total_matriculas = matriculas.count()
     total_pago = matriculas.aggregate(total=Sum('valor_pago'))['total'] or 0
-    total_devido = sum(m.curso.valor_inscricao for m in matriculas)
-    total_pendente = total_devido - total_pago
+    total_contratado = sum(m.curso.valor_inscricao for m in matriculas)
+    total_pendente = total_contratado - total_pago
     context = {
         'aluno': aluno,
         'matriculas': matriculas,
         'total_matriculas': total_matriculas,
         'total_pago': total_pago,
-        'total_devido': total_devido,
+        'total_contratado': total_contratado,
         'total_pendente': total_pendente,
     }
     return render(request, 'aluno_historico.html', context)
