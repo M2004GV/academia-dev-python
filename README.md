@@ -6,40 +6,40 @@ Sistema para gerenciar **alunos**, **cursos** e **matrículas** com relátorios 
 
 
 - CRUD completo via API
- - `/api/alunos/` 
- - `/api/cursos/` 
- - `/api/matriculas/`
+  - `/api/alunos/` 
+  - `/api/cursos/` 
+  - `/api/matriculas/`
 
 - Relatórios JSON 
- - `/api/relatorios/total_matriculas_por_curso/`
- - `/api/relatorios/total_devido_por_aluno/`
- - `/api/relatorios/pagamentos_pendentes/`
- - `/api/matriculas/por_aluno/?aluno_id=X`
+  - `/api/relatorios/total_matriculas_por_curso/`
+  - `/api/relatorios/total_devido_por_aluno/`
+  - `/api/relatorios/pagamentos_pendentes/`
+  - `/api/matriculas/por_aluno/?aluno_id=X`
 
 - Relatórios HTML
- - Dashboard geral: totais, métricas e visão administrativa
+  - Dashboard geral: totais, métricas e visão administrativa
   `http://localhost:8000/dashboard`
- - Histórico por aluno com valores pagos/pendentes
+  - Histórico por aluno com valores pagos/pendentes
   `http://localhost:8000/alunos/<id>/historico/`
 
 - Django Admin configurado
- - Modelos registrados
- - `list_display`, `search_fields` e filtros
- - Acesso: 
-  `http://localhost:8000/admin/`
+  - Modelos registrados
+  - `list_display`, `search_fields` e filtros
+  - Acesso: 
+   `http://localhost:8000/admin/`
 
 - Swagger
- - Swagger Ui:
- `http://localhost:8000/docs/swagger/`
- - Redoc Ui:
- `http://localhost:8000/docs/redoc/`
+  - Swagger Ui:
+  `http://localhost:8000/docs/swagger/`
+  - Redoc Ui:
+  `http://localhost:8000/docs/redoc/`
 
 - Docker completo
- - Django + PostgreSQL + PgAdmin
- - inicialização do db com `meu_database.sql`
+  - Django + PostgreSQL + PgAdmin
+  - inicialização do db com `meu_database.sql`
 
-- seed de dados 
-Arquivo load_seeds.py permite popuar o banco com usuários, cursos e matrículas para testes
+- Seed de dados 
+  -  Arquivo load_seeds.py permite popuar o banco com usuários, cursos e matrículas para testes
 ```bash
 docker-compose exec web python load_seeds.py
 ```
@@ -109,7 +109,7 @@ git clone https://github.com/M2004GV/academia-dev-python.git .
    - User: escola_user
    - Senha: escola_pass
 
-## 🛠 Uso da API
+##  Uso da API
 
 Os endpoints seguem o padrão REST do Django Rest Framework. Exemplos de uso com `curl`:
 
