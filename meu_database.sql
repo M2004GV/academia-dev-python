@@ -30,3 +30,5 @@ CREATE TABLE matricula(
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+ALTER TABLE matricula
+ADD CONSTRAINT matricula_unique UNIQUE (aluno_id, curso_id);
