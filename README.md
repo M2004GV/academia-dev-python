@@ -116,7 +116,7 @@ cp .env_example .env
       - Salvar
 
 
-      
+      **[Clique aqui para ver o Tutorial Visual de Conexão ](docs/tutorial_pgadmin.md)**
 
       
 
