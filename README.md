@@ -78,7 +78,7 @@ cp .env_example .env
   docker-compose exec web python -c "from django.core.management.utils import get_random_secret_key as k; print(k())"
   ```
 
-    Copie o resultado para a variável `SECRET_KEY` no seu `.env`
+   Copie o resultado para a variável `SECRET_KEY` no seu `.env`
 
 3. Build e subir:
 
