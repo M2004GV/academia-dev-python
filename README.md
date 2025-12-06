@@ -39,7 +39,7 @@ Sistema para gerenciar **alunos**, **cursos** e **matrículas** com relatórios 
   - inicialização do db com `meu_database.sql`
 
 - Seed de dados 
-  -  Arquivo load_seeds.py permite popular o banco com usuários, cursos e matrículas
+  -  Arquivo load_seeds.py permite popular o banco com usuários, cursos e matrículas (aplicar esse comando quando os serviços estiverem subido)
     ```bash
     docker-compose exec web python load_seeds.py
     ```
