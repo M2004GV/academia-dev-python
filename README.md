@@ -1,6 +1,6 @@
 # Academia Dev Python - Desafio Técnico 2026.1
 
-Sistema para gerenciar **alunos**, **cursos** e **matrículas** com relátorios HTML.
+Sistema para gerenciar **alunos**, **cursos** e **matrículas** com relatórios HTML.
 
 ## Funcionalidades implementadas
 
@@ -52,10 +52,11 @@ Sistema para gerenciar **alunos**, **cursos** e **matrículas** com relátorios 
 
 ## Como rodar
 
-1. Clone o repositorio 
+1. Clone o repositorio (substitua <diretorio> pelo caminho em que deseja clonar)
 
     ```bash
-    git clone https://github.com/M2004GV/academia-dev-python.git .
+    git clone https://github.com/M2004GV/academia-dev-python.git <diretorio>
+    cd <diretorio>
     ```
 
 2. Configure as variáveis de ambiente
@@ -69,6 +70,15 @@ cp .env_example .env
   - Credenciais do PgAdmin
   - Nome do banco
   - Config. do Django
+
+    **Importante**: a chave `SECRET_KEY` deve ser única. Você pode gerar uma chave aleatório executando:
+
+  ```bash
+
+  docker-compose exec web python -c "from django.core.management.utils import get_random_secret_key as k; print(k())"
+  ```
+
+    Copie o resultado para a variável `SECRET_KEY` no seu `.env`
 
 3. Build e subir:
 
